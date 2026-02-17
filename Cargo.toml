@@ -69,6 +69,10 @@ firewheel = { version = "0.10.0", default-features = false, features = [
   "glam-30",
   "freeverb_node",
   "std",
+  "symphonium",
+  "symphonium_resample",
+  "sampler_node",
+  "tracing",
 ] }
 symphonium = { version = "0.7", default-features = false, features = [
   "opt-simd",
