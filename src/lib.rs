@@ -343,7 +343,9 @@ use bevy_app::prelude::*;
 use bevy_asset::prelude::AssetApp;
 use bevy_ecs::prelude::*;
 use context::AudioStreamConfig;
-use firewheel::{backend::AudioBackend, cpal::CpalBackend};
+use firewheel::backend::AudioBackend;
+#[cfg(not(target_arch = "wasm32"))]
+use firewheel::cpal::CpalBackend;
 
 // We re-export Firewheel here for convenience.
 pub use firewheel;
@@ -409,7 +411,6 @@ pub mod prelude {
             DurationMusical, DurationSamples, DurationSeconds, InstantMusical, InstantSamples,
             InstantSeconds,
         },
-        cpal::CpalBackend,
         diff::{Memo, Notify},
         nodes::{
             StereoToMonoNode,
@@ -420,6 +421,9 @@ pub mod prelude {
             volume_pan::VolumePanNode,
         },
     };
+
+    #[cfg(not(target_arch = "wasm32"))]
+    pub use firewheel::cpal::CpalBackend;
 
     #[cfg(feature = "stream")]
     pub use firewheel::nodes::stream::{
@@ -476,6 +480,7 @@ pub struct SeedlingPlugin<B: AudioBackend> {
     pub graph_config: configuration::GraphConfiguration,
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 impl Default for SeedlingPlugin<CpalBackend> {
     fn default() -> Self {
         SeedlingPlugin::<CpalBackend>::new()

@@ -126,7 +126,12 @@ impl SampleRate {
 /// Mutating this resource will cause the audio stream to stop
 /// and restart, applying the latest changes.
 #[derive(Resource, Debug)]
+#[cfg(not(target_arch = "wasm32"))]
 pub struct AudioStreamConfig<B: AudioBackend = firewheel::cpal::CpalBackend>(pub B::Config);
+
+#[derive(Resource, Debug)]
+#[cfg(target_arch = "wasm32")]
+pub struct AudioStreamConfig<B: AudioBackend>(pub B::Config);
 
 pub(crate) fn initialize_context<B>(
     firewheel_config: crate::prelude::FirewheelConfig,

@@ -61,13 +61,14 @@ bevy_reflect = { version = "0.18.0", default-features = false, features = [
   "glam",
 ] }
 
-firewheel = { version = "0.10.0", features = [
+firewheel = { version = "0.10.0", default-features = false, features = [
   "bevy",
   "spatial_basic_node",
   "scheduled_events",
   "musical_transport",
   "glam-30",
   "freeverb_node",
+  "std",
 ] }
 symphonium = { version = "0.7", default-features = false, features = [
   "opt-simd",
@@ -87,10 +88,9 @@ firewheel-ircam-hrtf = { version = "0.4.0", optional = true, features = [
 ] }
 firewheel-web-audio = { version = "0.4.0", optional = true }
 
-[target.'cfg(target_arch = "wasm32")'.dependencies]
-firewheel = { version = "0.10.0", features = [
-  "wasm-bindgen",
-] }
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies.firewheel]
+version = "0.10.0"
+features = ["cpal"]
 
 [dev-dependencies]
 bevy_seedling = { path = ".", features = ["hrtf", "loudness"] }

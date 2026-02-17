@@ -81,7 +81,10 @@ where
         .add_observer(fetch_io)
         .add_observer(connect_io::<StreamStartEvent>)
         .add_observer(connect_io::<StreamRestartEvent>)
-        .add_observer(restart_audio);
+        ;
+
+        #[cfg(not(target_arch = "wasm32"))]
+        app.add_observer(restart_audio);
     }
 }
 
@@ -210,6 +213,7 @@ fn fetch_io(
 #[cfg_attr(feature = "reflect", derive(bevy_reflect::Reflect))]
 pub struct RestartAudioEvent;
 
+#[cfg(not(target_arch = "wasm32"))]
 fn restart_audio(
     _: On<RestartAudioEvent>,
     inputs: Query<&InputDeviceInfo>,
